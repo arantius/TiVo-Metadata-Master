@@ -9,31 +9,21 @@ class App:
   def __init__(self, master):
     self.db = TheTVDB('D454AC0B0E1A24DE')
 
-    top_frame = Frame(master)
-    top_frame.pack()
-
     # Search "form" and results.
-    search_frame = Frame(top_frame)
-    search_frame.pack(side=LEFT)
+    self.search_entry = Entry(master)
+    self.search_entry.grid(row=0, column=0)
 
-    search_entry_frame = Frame(search_frame)
-    search_entry_frame.pack()
+    search_button = Button(master, text="Search", command=self.searchShows)
+    search_button.grid(row=0, column=1)
 
-    self.search_entry = Entry(search_entry_frame)
-    self.search_entry.pack(side=LEFT)
-
-    search_button = Button(search_entry_frame, text="Search Shows", command=self.searchShows)
-    search_button.pack(side=LEFT)
-
-    self.search_results_list = Listbox(search_frame)
-    self.search_results_list.pack(side=TOP)
+    self.search_results_list = Listbox(master)
+    self.search_results_list.grid(row=10, column=0, columnspan=2)
 
     # Show (seasons and) episodes.
-    episodes_frame = Frame(top_frame)
-    episodes_frame.pack(side=LEFT)
+    Label(master, text="Episodes").grid(row=0, column=10)
 
-    episodes_list = Listbox(episodes_frame)
-    episodes_list.pack()
+    episodes_list = Listbox(master)
+    episodes_list.grid(row=10, column=10)
 
     # Files.
     #...
