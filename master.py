@@ -14,6 +14,8 @@ class App:
     # Search "form" and results.
     self.search_entry = Entry(master)
     self.search_entry.grid(row=0, column=0)
+    self.search_entry.focus()
+    self.search_entry.bind('<Return>', self.searchShows)
 
     search_button = Button(master, text="Search", command=self.searchShows)
     search_button.grid(row=0, column=1)
@@ -30,7 +32,7 @@ class App:
     # Files.
     #...
 
-  def searchShows(self):
+  def searchShows(self, unused_event=None):
     print ">>> searchShows() ..."
     query = self.search_entry.get()
     print self.db.get_matching_shows(query)
