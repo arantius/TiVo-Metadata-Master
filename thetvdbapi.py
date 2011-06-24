@@ -76,12 +76,12 @@ class TheTVDB(object):
             self.overview = node.findtext("Overview")
             self.season_number = node.findtext("SeasonNumber")
             self.episode_number = node.findtext("EpisodeNumber")
-            self.director = node.findtext("Director")
+            self.director = [g for g in node.findtext("Director").split("|") if g]
             self.guest_stars = node.findtext("GuestStars")
             self.language = node.findtext("Language")
             self.production_code = node.findtext("ProductionCode")
             self.rating = node.findtext("Rating")
-            self.writer = node.findtext("Writer")
+            self.writer = [g for g in node.findtext("Writer").split("|") if g]
 
             # Air date
             self.first_aired = TheTVDB.convert_date(node.findtext("FirstAired"))
