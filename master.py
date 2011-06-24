@@ -90,6 +90,9 @@ class App:
     for filename in self.filenames:
       self.files_listbox.insert(END, filename)
 
+    self.files_listbox.selection_set(0, END)
+    self.files_listbox.focus()
+
   def pickShow(self, unused_event=None):
     show_name = self.shows_listbox.selection_get()
     show, episodes = self.db.get_show_and_episodes(self.show_ids[show_name])  # @UnusedVariable
