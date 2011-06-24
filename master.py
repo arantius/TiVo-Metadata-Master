@@ -7,6 +7,7 @@ from tkFileDialog import askopenfilenames
 from tkMessageBox import showwarning
 import math
 import os
+import time
 
 def ScrollingListbox(parent, **kwargs):
   frame = Frame(parent)
@@ -100,7 +101,8 @@ class App:
       return
     show_name = self.shows_listbox.get(selection_index)
     show, episodes = self.db.get_show_and_episodes(self.show_ids[show_name])  # @UnusedVariable
-    self.episodes = dict((ep.id, ep) for ep in episodes)
+    self.show = show
+    self.episodes = {}
 
     max_season = max(int(x.season_number) for x in episodes)
     season_digits = math.log(float(max_season), 10) + 1
@@ -110,9 +112,11 @@ class App:
     pattern = 'S%%0%ddE%%0%dd %%s' % (season_digits, episode_digits)
     self.episodes_listbox.delete(0, END)
     for episode in episodes:
-      self.episodes_listbox.insert(END, pattern % (
+      key = pattern % (
           int(episode.season_number), int(episode.episode_number),
-          episode.name))
+          episode.name)
+      self.episodes[key] = episode
+      self.episodes_listbox.insert(END, key)
 
     self.episodes_listbox.selection_set(0, 0)
     self.episodes_listbox.focus()
@@ -151,6 +155,31 @@ class App:
       return showwarning(
           'Input error', 'Select the same number of episodes and files.')
 
+    for i, filename in enumerate(filenames):
+      episode = self.episodes[episodes[i]]
+
+      filename = os.path.join(self.path, filename) + '.txt'
+      file = open(filename, 'w')
+      data = [
+          'title : ' + self.show.name,
+          'seriesTitle : ' + self.show.name,
+          'episodeTitle : ' + episode.name,
+          'episodeNumber : ' + episode.episode_number,
+          'originalAirDate : ' + episode.first_aired.isoformat() + 'T00:00:00Z',
+          'description : ' + episode.overview,
+          'isEpisode : true',
+          'seriesId : ' + self.show.zap2it_id,
+          ] + [
+              'vDirector : ' + d for d in episode.director
+          ] + [
+              'vWriter : ' + w for w in episode.writer
+          ] + [
+              'vSeriesGenre : ' + g for g in self.show.genre
+          ] + [
+              'vSeriesActor : ' + a for a in self.show.actors
+          ]
+      file.write('\n'.join(data))
+      file.close()
 
 if __name__ == '__main__':
   root = Tk()
