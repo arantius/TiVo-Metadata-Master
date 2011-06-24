@@ -9,6 +9,8 @@ class App:
   def __init__(self, master):
     self.db = TheTVDB('D454AC0B0E1A24DE')
 
+    master.bind('<Control-q>', lambda _: master.quit())
+
     # Search "form" and results.
     self.search_entry = Entry(master)
     self.search_entry.grid(row=0, column=0)
