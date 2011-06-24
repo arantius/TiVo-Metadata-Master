@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 """A simple GUI to generate metadata files for pyTivo in batch."""
 
-from Tkinter import *  # @UnusedWildImport
+from Tkinter import * # @UnusedWildImport
 from thetvdbapi import TheTVDB
+import math
 
 
 def ScrollingListbox(parent, **kwargs):
@@ -43,17 +44,31 @@ class App:
     # Show (seasons and) episodes.
     Label(master, text='Episodes').grid(row=0, column=10)
 
-    frame, self.episodes_list = ScrollingListbox(master, selectmode=EXTENDED)
+    frame, self.episodes_listbox = ScrollingListbox(master, selectmode=EXTENDED)
     frame.grid(row=10, column=10)
 
     # Files.
     #...
 
   def pickShow(self, unused_event=None):
-    print '>>> pickShow() ...'
     show_name = self.shows_listbox.selection_get()
     show, episodes = self.db.get_show_and_episodes(self.show_ids[show_name])  # @UnusedVariable
-    print episodes
+    self.episodes = dict((ep.id, ep) for ep in episodes)
+
+    max_season = max(int(x.season_number) for x in episodes)
+    season_digits = math.log(float(max_season), 10) + 1
+    max_episode = max(int(x.episode_number) for x in episodes)
+    episode_digits = math.log(float(max_episode), 10) + 1
+
+    pattern = 'S%%0%ddE%%0%dd %%s' % (season_digits, episode_digits)
+    self.episodes_listbox.delete(0, END)
+    for episode in episodes:
+      self.episodes_listbox.insert(END, pattern % (
+          int(episode.season_number), int(episode.episode_number),
+          episode.name))
+
+    self.episodes_listbox.selection_set(0, 0)
+    self.episodes_listbox.focus()
 
   def searchShows(self, unused_event=None):
     # Run the query.
