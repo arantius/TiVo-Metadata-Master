@@ -56,14 +56,16 @@ class App:
     # Show (seasons and) episodes.
     Label(master, text='Episodes').grid(row=0, column=1)
 
-    frame, self.episodes_listbox = ScrollingListbox(master, selectmode=EXTENDED)
+    frame, self.episodes_listbox = ScrollingListbox(
+        master, exportselection=0, selectmode=EXTENDED)
     frame.grid(row=1, column=1, sticky='nesw')
 
     # Files.
     browse_button = Button(master, text='Browse', command=self.browse)
     browse_button.grid(row=0, column=2)
 
-    frame, self.files_listbox = ScrollingListbox(master)
+    frame, self.files_listbox = ScrollingListbox(
+        master, exportselection=0, selectmode=EXTENDED)
     frame.grid(row=1, column=2, sticky='nesw')
 
     # Go!
