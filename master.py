@@ -4,6 +4,7 @@
 from Tkinter import * # @UnusedWildImport
 from thetvdbapi import TheTVDB
 from tkFileDialog import askopenfilenames
+from tkMessageBox import showwarning
 import math
 import os
 
@@ -45,7 +46,7 @@ class App:
     self.search_entry.bind('<Return>', self.searchShows)
 
     # Search 'results'.
-    frame, self.shows_listbox = ScrollingListbox(master)
+    frame, self.shows_listbox = ScrollingListbox(master, exportselection=0)
     frame.grid(row=1, column=0, sticky='nesw')
     self.shows_listbox.bind('<Return>', self.pickShow)
 
@@ -94,7 +95,10 @@ class App:
     self.files_listbox.focus()
 
   def pickShow(self, unused_event=None):
-    show_name = self.shows_listbox.selection_get()
+    selection_index = self.shows_listbox.curselection()
+    if not selection_index:
+      return
+    show_name = self.shows_listbox.get(selection_index)
     show, episodes = self.db.get_show_and_episodes(self.show_ids[show_name])  # @UnusedVariable
     self.episodes = dict((ep.id, ep) for ep in episodes)
 
@@ -129,7 +133,24 @@ class App:
     self.shows_listbox.focus()
 
   def write(self):
-    pass
+    selected_index = self.episodes_listbox.curselection()
+    if not self.episodes_listbox.size() or not selected_index:
+      return showwarning('Input error', 'Pick a show.')
+    episodes = [self.episodes_listbox.get(x) for x in selected_index]
+    if not episodes:
+      return showwarning('Input error', 'Select at least one episode.')
+
+    selected_index = self.files_listbox.curselection()
+    if not self.files_listbox.size() or not selected_index:
+      showwarning('Input error', 'Browse for files.')
+    filenames = [self.files_listbox.get(x) for x in selected_index]
+    if not filenames:
+      return showwarning('Input error', 'Select at least one file.')
+
+    if len(episodes) != len(filenames):
+      return showwarning(
+          'Input error', 'Select the same number of episodes and files.')
+
 
 if __name__ == '__main__':
   root = Tk()
