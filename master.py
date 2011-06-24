@@ -5,6 +5,16 @@ from Tkinter import *  # @UnusedWildImport
 from thetvdbapi import TheTVDB
 
 
+def ScrollingListbox(parent, **kwargs):
+  frame = Frame(parent)
+  scrollbar = Scrollbar(frame, orient=VERTICAL)
+  listbox = Listbox(frame, yscrollcommand=scrollbar.set, **kwargs)
+  scrollbar.config(command=listbox.yview)
+  scrollbar.pack(side=RIGHT, fill=Y)
+  listbox.pack(side=LEFT, fill=BOTH, expand=1)
+
+  return frame, listbox
+
 class App:
   def __init__(self, master):
     self.db = TheTVDB('D454AC0B0E1A24DE')
@@ -22,8 +32,8 @@ class App:
     search_button = Button(master, text='Search', command=self.searchShows)
     search_button.grid(row=0, column=1)
 
-    self.shows_listbox = Listbox(master)
-    self.shows_listbox.grid(row=10, column=0, columnspan=2)
+    frame, self.shows_listbox = ScrollingListbox(master)
+    frame.grid(row=10, column=0, columnspan=2)
     self.shows_listbox.bind('<Return>', self.pickShow)
 
     self.select_show_button = Button(master, text='Pick Show',
@@ -33,8 +43,8 @@ class App:
     # Show (seasons and) episodes.
     Label(master, text='Episodes').grid(row=0, column=10)
 
-    episodes_list = Listbox(master, selectmode=MULTIPLE)
-    episodes_list.grid(row=10, column=10)
+    frame, self.episodes_list = ScrollingListbox(master, selectmode=EXTENDED)
+    frame.grid(row=10, column=10)
 
     # Files.
     #...
