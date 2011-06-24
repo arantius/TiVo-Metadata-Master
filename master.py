@@ -26,43 +26,49 @@ class App:
     master.bind('<Escape>', lambda _: master.quit())
     master.bind('<Control-q>', lambda _: master.quit())
 
+    for i in xrange(3):
+      master.columnconfigure(index=i, weight=1)
+    master.rowconfigure(index=1, weight=1)
+
     # Search 'form' and results.
-    self.search_entry = Entry(master)
-    self.search_entry.grid(row=0, column=0)
+    search_frame = Frame(master)
+    search_frame.grid(row=0, column=0)
+    self.search_entry = Entry(search_frame)
+    self.search_entry.pack(side=LEFT)
     self.search_entry.insert(0, 'alias')
     self.search_entry.focus()
     self.search_entry.bind('<Return>', self.searchShows)
 
-    search_button = Button(master, text='Search', command=self.searchShows)
-    search_button.grid(row=0, column=1)
+    search_button = Button(search_frame, text='Search', command=self.searchShows)
+    search_button.pack(side=LEFT)
 
     frame, self.shows_listbox = ScrollingListbox(master)
-    frame.grid(row=10, column=0, columnspan=2)
+    frame.grid(row=1, column=0, sticky='nesw')
     self.shows_listbox.bind('<Return>', self.pickShow)
 
     self.select_show_button = Button(master, text='Pick Show',
         command=self.pickShow, state=DISABLED)
-    self.select_show_button.grid(row=20, column=0, columnspan=2)
+    self.select_show_button.grid(row=2, column=0)
 
     # Show (seasons and) episodes.
-    Label(master, text='Episodes').grid(row=0, column=10)
+    Label(master, text='Episodes').grid(row=0, column=1)
 
     frame, self.episodes_listbox = ScrollingListbox(master, selectmode=EXTENDED)
-    frame.grid(row=10, column=10)
+    frame.grid(row=1, column=1, sticky='nesw')
 
     # Files.
     browse_button = Button(master, text='Browse', command=self.browse)
-    browse_button.grid(row=0, column=20)
+    browse_button.grid(row=0, column=2)
 
     frame, self.files_listbox = ScrollingListbox(master)
-    frame.grid(row=10, column=20)
+    frame.grid(row=1, column=2, sticky='nesw')
 
     # Go!
     self.go_button = Button(master, text='Write Metadata', command=self.write)
-    self.go_button.grid(row=20, column=20)
+    self.go_button.grid(row=2, column=2)
 
     Message(master, text='Pick a set of episodes, and files.  Press go.'
-        ).grid(row=20, column=10)
+        ).grid(row=2, column=1)
 
   def browse(self):
     filenames = askopenfilenames()
