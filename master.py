@@ -29,19 +29,22 @@ class App:
     for i in xrange(3):
       master.columnconfigure(index=i, weight=1)
     master.rowconfigure(index=1, weight=1)
+    master.geometry('640x480')
 
-    # Search 'form' and results.
+    # Search 'form'.
     search_frame = Frame(master)
-    search_frame.grid(row=0, column=0)
+    search_frame.grid(row=0, column=0, sticky='ew')
+
+    search_button = Button(search_frame, text='Search', command=self.searchShows)
+    search_button.pack(side=RIGHT)
+
     self.search_entry = Entry(search_frame)
-    self.search_entry.pack(side=LEFT)
+    self.search_entry.pack(fill=X, padx=3, pady=3)
     self.search_entry.insert(0, 'alias')
     self.search_entry.focus()
     self.search_entry.bind('<Return>', self.searchShows)
 
-    search_button = Button(search_frame, text='Search', command=self.searchShows)
-    search_button.pack(side=LEFT)
-
+    # Search 'results'.
     frame, self.shows_listbox = ScrollingListbox(master)
     frame.grid(row=1, column=0, sticky='nesw')
     self.shows_listbox.bind('<Return>', self.pickShow)
