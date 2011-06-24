@@ -81,9 +81,6 @@ class App:
       path_len = len(self.path) + 1
       self.filenames = [x[path_len:] for x in filenames]
 
-      print self.path
-      print self.filenames
-
     self.files_listbox.delete(0, END)
     for filename in self.filenames:
       self.files_listbox.insert(END, filename)
