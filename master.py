@@ -57,7 +57,6 @@ class App:
 
     self.search_entry = Entry(search_frame)
     self.search_entry.pack(fill=X, padx=3, pady=3)
-    self.search_entry.insert(0, 'alias')
     self.search_entry.focus()
     self.search_entry.bind('<Return>', self.searchShows)
 
