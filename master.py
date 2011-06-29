@@ -95,6 +95,12 @@ class App:
     filenames = askopenfilenames(filetypes=[
         ('Video Files', '*.3g2 *.3gp *.asf *.asx *.avi *.flv *.mov *.wmv')
         ])
+    if type(filenames) == unicode and (
+        '{' == filenames[0] and '}' == filenames[-1]):
+      # In 2.7, askopenfilenames() seems to return a string in the form of
+      #  {1} {2} {3} ...
+      # instead of a list, like it did in 2.5 and is documented to.  Fix.
+      filenames = filenames[1:-1].split('} {')
 
     self.go_button.config(state=(filenames and NORMAL or DISABLED))
 
