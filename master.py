@@ -92,7 +92,9 @@ class App:
         ).grid(row=2, column=1)
 
   def browse(self):
-    filenames = askopenfilenames()
+    filenames = askopenfilenames(filetypes=[
+        ('Video Files', '*.3g2 *.3gp *.asf *.asx *.avi *.flv *.mov *.wmv')
+        ])
 
     self.go_button.config(state=(filenames and NORMAL or DISABLED))
 
