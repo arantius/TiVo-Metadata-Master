@@ -112,7 +112,7 @@ class App:
       self.filenames = [x[path_len:] for x in filenames]
 
     self.files_listbox.delete(0, END)
-    for filename in self.filenames:
+    for filename in sorted(self.filenames):
       self.files_listbox.insert(END, filename)
 
     self.files_listbox.selection_set(0, END)
