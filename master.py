@@ -93,7 +93,8 @@ class App:
 
   def browse(self):
     filenames = askopenfilenames(filetypes=[
-        ('Video Files', '*.3g2 *.3gp *.asf *.asx *.avi *.flv *.mov *.wmv')
+        ('Common Video Files',
+         '*.asf *.avi *.flv *.mkv *.mov *.mp4 *.mpg *.mpeg *.ogg *.webm *.wmv')
         ])
     if type(filenames) == unicode and (
         '{' == filenames[0] and '}' == filenames[-1]):
