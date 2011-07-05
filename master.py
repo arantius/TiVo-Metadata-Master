@@ -185,7 +185,7 @@ class App:
 
       filename = os.path.join(self.path, filename) + '.txt'
       file = codecs.open(filename, mode='w', encoding='utf-8')
-      data = [
+      data = ([
           u'title : ' + self.show.name,
           u'seriesTitle : ' + self.show.name,
           u'episodeTitle : ' + episode.name,
@@ -193,16 +193,12 @@ class App:
           u'originalAirDate : ' + episode.first_aired.isoformat() + u'T00:00:00Z',
           u'description : ' + episode.overview,
           u'isEpisode : true',
-          u'seriesId : ' + self.show.zap2it_id,
-          ] + [
-              u'vDirector : ' + d for d in episode.director
-          ] + [
-              u'vWriter : ' + w for w in episode.writer
-          ] + [
-              u'vSeriesGenre : ' + g for g in self.show.genre
-          ] + [
-              u'vSeriesActor : ' + a for a in self.show.actors
-          ]
+          u'seriesId : ' + self.show.zap2it_id]
+          + [u'vDirector : ' + d for d in episode.director]
+          + [u'vWriter : ' + w for w in episode.writer]
+          + [u'vSeriesGenre : ' + g for g in self.show.genre]
+          + [u'vSeriesActor : ' + a for a in self.show.actors]
+          )
       file.write('\n'.join(data))
       file.close()
 
