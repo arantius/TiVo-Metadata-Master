@@ -21,6 +21,8 @@ from Tkinter import * # @UnusedWildImport
 from thetvdbapi import TheTVDB
 from tkFileDialog import askopenfilenames
 from tkMessageBox import showwarning
+
+import codecs
 import math
 import os
 
@@ -182,24 +184,24 @@ class App:
       episode = self.episodes[episodes[i]]
 
       filename = os.path.join(self.path, filename) + '.txt'
-      file = open(filename, 'w')
+      file = codecs.open(filename, mode='w', encoding='utf-8')
       data = [
-          'title : ' + self.show.name,
-          'seriesTitle : ' + self.show.name,
-          'episodeTitle : ' + episode.name,
-          'episodeNumber : ' + episode.episode_number,
-          'originalAirDate : ' + episode.first_aired.isoformat() + 'T00:00:00Z',
-          'description : ' + episode.overview,
-          'isEpisode : true',
-          'seriesId : ' + self.show.zap2it_id,
+          u'title : ' + self.show.name,
+          u'seriesTitle : ' + self.show.name,
+          u'episodeTitle : ' + episode.name,
+          u'episodeNumber : ' + episode.episode_number,
+          u'originalAirDate : ' + episode.first_aired.isoformat() + u'T00:00:00Z',
+          u'description : ' + episode.overview,
+          u'isEpisode : true',
+          u'seriesId : ' + self.show.zap2it_id,
           ] + [
-              'vDirector : ' + d for d in episode.director
+              u'vDirector : ' + d for d in episode.director
           ] + [
-              'vWriter : ' + w for w in episode.writer
+              u'vWriter : ' + w for w in episode.writer
           ] + [
-              'vSeriesGenre : ' + g for g in self.show.genre
+              u'vSeriesGenre : ' + g for g in self.show.genre
           ] + [
-              'vSeriesActor : ' + a for a in self.show.actors
+              u'vSeriesActor : ' + a for a in self.show.actors
           ]
       file.write('\n'.join(data))
       file.close()
