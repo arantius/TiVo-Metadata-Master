@@ -41,6 +41,7 @@ class App:
     self.db = TheTVDB('D454AC0B0E1A24DE')
     self.path = ''
     self.filenames = []
+    self.master = master
 
     master.bind('<Escape>', lambda _: master.quit())
     master.bind('<Control-q>', lambda _: master.quit())
@@ -98,16 +99,7 @@ class App:
         ('Common Video Files',
          '*.asf *.avi *.flv *.mkv *.mov *.mp4 *.mpg *.mpeg *.ogg *.webm *.wmv')
         ])
-    if type(filenames) == unicode and (
-        '{' == filenames[0] and '}' == filenames[-1]):
-      # In 2.7, askopenfilenames() seems to return a string in the form of
-      #  {1} {2} {3} ...
-      # instead of a list, like it did in 2.5 and is documented to.  Fix.
-      filenames = filenames[1:-1].split('} {')
-    elif type(filenames) == unicode:
-      # But sometimes, just a space-delimited string.  (If there are no
-      # spaces in any file name??)
-      filenames = filenames.split(' ')
+    filenames = self.master.tk.splitlist(filenames)
 
     self.go_button.config(state=(filenames and NORMAL or DISABLED))
 
