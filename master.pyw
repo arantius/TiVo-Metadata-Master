@@ -104,6 +104,10 @@ class App:
       #  {1} {2} {3} ...
       # instead of a list, like it did in 2.5 and is documented to.  Fix.
       filenames = filenames[1:-1].split('} {')
+    elif type(filenames) == unicode:
+      # But sometimes, just a space-delimited string.  (If there are no
+      # spaces in any file name??)
+      filenames = filenames.split(' ')
 
     self.go_button.config(state=(filenames and NORMAL or DISABLED))
 
