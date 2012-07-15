@@ -186,7 +186,6 @@ class App:
           u'seriesTitle : ' + self.show.name,
           u'episodeTitle : ' + episode.name,
           u'episodeNumber : ' + episode.episode_number,
-          u'originalAirDate : ' + episode.first_aired.isoformat() + u'T00:00:00Z',
           u'description : ' + episode.overview,
           u'isEpisode : true',
           u'seriesId : ' + self.show.zap2it_id]
@@ -196,6 +195,8 @@ class App:
           + [u'vSeriesActor : ' + a for a in self.show.actors]
           )
       file_.write('\n'.join(data))
+      if episode.first_aired:
+        u'originalAirDate : ' + episode.first_aired.isoformat() + u'T00:00:00Z',
       file_.close()
 
 if __name__ == '__main__':
