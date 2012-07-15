@@ -150,7 +150,7 @@ class App:
 
     # Populate the results.
     self.shows_listbox.delete(0, END)
-    for name, id in self.show_ids.iteritems():
+    for name, _ in self.show_ids.iteritems():
       self.shows_listbox.insert(END, name)
     self.select_show_button.config(state=(self.show_ids and NORMAL or DISABLED))
 
@@ -180,7 +180,7 @@ class App:
       episode = self.episodes[episodes[i]]
 
       filename = os.path.join(self.path, filename) + '.txt'
-      file = codecs.open(filename, mode='w', encoding='utf-8')
+      file_ = codecs.open(filename, mode='w', encoding='utf-8')
       data = ([
           u'title : ' + self.show.name,
           u'seriesTitle : ' + self.show.name,
@@ -195,8 +195,8 @@ class App:
           + [u'vSeriesGenre : ' + g for g in self.show.genre]
           + [u'vSeriesActor : ' + a for a in self.show.actors]
           )
-      file.write('\n'.join(data))
-      file.close()
+      file_.write('\n'.join(data))
+      file_.close()
 
 if __name__ == '__main__':
   root = Tk()
